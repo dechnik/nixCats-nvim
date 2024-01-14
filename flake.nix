@@ -179,11 +179,13 @@
                 #   ]
                 # ))
                 # other
+                harpoon
                 nvim-lspconfig
                 fidget-nvim
                 lualine-nvim
                 gitsigns-nvim
                 which-key-nvim
+                neo-tree-nvim
                 comment-nvim
                 vim-sleuth
                 vim-fugitive

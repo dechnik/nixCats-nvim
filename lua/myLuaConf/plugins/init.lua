@@ -43,8 +43,52 @@ require('lualine').setup({
 })
 require('nvim-surround').setup()
 
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup({})
+-- REQUIRED
+
+vim.keymap.set("n", "<leader>ha", function() harpoon:list():append() end, { noremap = true, silent = true, desc = 'append to harpoon' })
+vim.keymap.set("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { noremap = true, silent = true, desc = 'open harpoon menu' })
+
+vim.keymap.set("n", "<leader>h1", function() harpoon:list():select(1) end, { noremap = true, silent = true, desc = 'harpoon 1' })
+vim.keymap.set("n", "<leader>h2", function() harpoon:list():select(2) end, { noremap = true, silent = true, desc = 'harpoon 2' })
+vim.keymap.set("n", "<leader>h3", function() harpoon:list():select(3) end, { noremap = true, silent = true, desc = 'harpoon 3' })
+vim.keymap.set("n", "<leader>h4", function() harpoon:list():select(4) end, { noremap = true, silent = true, desc = 'harpoon 4' })
+
 -- indent-blank-line
 require("ibl").setup()
+
+-- I honestly only use this to see the little git icons. 
+-- I wanna figure out how to add them to netrw instead and ditch this
+require('neo-tree').setup({
+  close_if_last_window = true,
+  window = {
+    position = "float",
+    mappings = {
+      ["<space>"] = {
+        nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use 
+        noremap = false,
+      },
+    },
+  },
+  filesystem = {
+    filtered_items = {
+      visible = true,
+      hide_dotfiles = true,
+      hide_gitignored = true,
+      hide_hidden = true,
+    },
+    hijack_netrw_behavior = "disabled",
+  },
+  buffers = {
+    follow_current_file = {
+      enabled = true,
+    },
+  },
+})
+vim.keymap.set("n", "<leader>FT", "<cmd>Neotree toggle<CR>", { noremap = true, desc = '[F]ile [T]ree' })
 
 require('gitsigns').setup({
     -- See `:help gitsigns.txt`
@@ -89,4 +133,5 @@ require('which-key').register {
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
   ['<leader>m'] = { name = '[M]arkdown', _ = 'which_key_ignore' },
   ['<leader>F'] = { name = '[F]ile explorer', _ = 'which_key_ignore' },
+  ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
 }
