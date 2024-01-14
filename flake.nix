@@ -21,11 +21,19 @@
       url = "github:m-demare/hlargs.nvim";
       flake = false;
     };
+    "plugins-harpoon" = {
+      url = "github:ThePrimeagen/harpoon/harpoon2";
+      flake = false;
+    };
 
     # neovim = {
     #   url = "github:neovim/neovim";
     #   flake = false;
     # };
+    # I ask this questions I couldnt google the answer to and/or
+    # need things I havent heard of. It has better code context than gpt.
+    # It also occasionally helps with goto definition.
+    sg-nvim.url = "github:sourcegraph/sg.nvim";
 
     # a flake import. We will import this one with an overlay
     # but you could also import the package itself instead.
@@ -59,7 +67,7 @@
       ];
       pkgs = import nixpkgs {
         inherit system;
-        overlays = otherOverlays ++ 
+        overlays = otherOverlays ++
           [ (standardPluginOverlay inputs) ];
         # config.allowUnfree = true;
       };
@@ -79,7 +87,7 @@
       # and
       # :help nixCats.flake.outputs.categoryDefinitions.scheme
       categoryDefinitions = packageDef: {
-        # to define and use a new category, simply add a new list to a set here, 
+        # to define and use a new category, simply add a new list to a set here,
         # and later, you will include categoryname = true; in the set you
         # provide when you build the package using this builder function.
         # see :help nixCats.flake.outputs.packageDefinitions for info on that section.
@@ -87,7 +95,7 @@
         # propagatedBuildInputs:
         # this section is for dependencies that should be available
         # at BUILD TIME for plugins. WILL NOT be available to PATH
-        # However, they WILL be available to the shell 
+        # However, they WILL be available to the shell
         # and neovim path when using nix develop
         propagatedBuildInputs = {
           generalBuildInputs = with pkgs; [
@@ -103,6 +111,9 @@
             universal-ctags
             ripgrep
             fd
+          ];
+          AI = [
+            inputs.sg-nvim.packages.${pkgs.system}.default
           ];
           neonixdev = {
             # also you can do this.
@@ -122,6 +133,9 @@
           neonixdev = with pkgs.vimPlugins; [
             neodev-nvim
             neoconf-nvim
+          ];
+          AI = [
+            inputs.sg-nvim.packages.${pkgs.system}.sg-nvim
           ];
           # yes these category names are arbitrary
           markdown = with pkgs.vimPlugins; [
@@ -192,6 +206,7 @@
                 "catppuccin-mocha" = catppuccin-nvim;
                 "tokyonight" = tokyonight-nvim;
                 "tokyonight-day" = tokyonight-nvim;
+                "gruvbox" = gruvbox-nvim;
               }
             );
             # This is obviously a fairly basic usecase for this, but still nice.
@@ -275,7 +290,7 @@
       # see :help nixCats.flake.outputs.packageDefinitions
       packageDefinitions = {
         nixCats = {
-          settings = settings.nixCats; 
+          settings = settings.nixCats;
           categories = {
             generalBuildInputs = true;
             markdown = true;
@@ -287,12 +302,13 @@
               subtest1 = true;
             };
             debug = false;
-            # this does not have an associated category of plugins, 
+            # this does not have an associated category of plugins,
             # but lua can still check for it
             lspDebugMode = false;
             # you could also pass something else:
             themer = true;
-            colorscheme = "onedark";
+            AI = true;
+            colorscheme = "gruvbox";
             theBestCat = "says meow!!";
             theWorstCat = {
               thing'1 = [ "MEOW" "HISSS" ];
@@ -307,7 +323,7 @@
             # see :help nixCats
           };
         };
-        regularCats = { 
+        regularCats = {
           settings = settings.unwrappedLua;
           categories = {
             generalBuildInputs = true;

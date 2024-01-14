@@ -1,6 +1,6 @@
 local colorschemeName = nixCats('colorscheme')
 if require('nixCatsUtils').isNixCats then
-  colorschemeName = 'onedark'
+  colorschemeName = 'gruvbox'
 end
 vim.cmd.colorscheme(colorschemeName)
 
@@ -81,7 +81,7 @@ require('which-key').setup()
 
 -- document existing key chains
 require('which-key').register {
-  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+  ['<leader>c'] = { name = '[C]ody', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
   ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },

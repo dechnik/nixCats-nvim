@@ -35,13 +35,14 @@ if not require('nixCatsUtils').isNixCats then
   bootstrap_pckr()
 
   -- ### DONT USE CONFIG VARIABLE ###
-  -- unless you are ok with that instruction 
+  -- unless you are ok with that instruction
   -- not being ran when used via nix,
   -- this file will not be ran when using nix
 
   require('pckr').add{
 
     { 'joshdick/onedark.vim', },
+    { 'ellisonleao/gruvbox.nvim', },
     { 'nvim-tree/nvim-web-devicons', },
 
     { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate',
