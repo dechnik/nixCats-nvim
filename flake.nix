@@ -113,6 +113,7 @@
             fd
           ];
           AI = [
+            pkgs.nodejs
             inputs.sg-nvim.packages.${pkgs.system}.default
           ];
           neonixdev = {
