@@ -80,6 +80,11 @@ if not require('nixCatsUtils').isNixCats then
         { 'hrsh7th/cmp-buffer', },
         { 'hrsh7th/cmp-cmdline', },
         { 'dmitmel/cmp-cmdline-history', },
+        { "Exafunction/codeium.nvim",
+          requires = {
+            "nvim-lua/plenary.nvim",
+          },
+        }
       },
     },
 

@@ -30,6 +30,8 @@
     #   url = "github:neovim/neovim";
     #   flake = false;
     # };
+    # I use this for autocomplete filler especially for comments. 
+    codeium.url = "github:Exafunction/codeium.nvim";
     # I ask this questions I couldnt google the answer to and/or
     # need things I havent heard of. It has better code context than gpt.
     # It also occasionally helps with goto definition.
@@ -64,6 +66,7 @@
       otherOverlays = (import ./overlays inputs) ++ [
         # add any flake overlays here.
         inputs.nixd.overlays.default
+        inputs.codeium.overlays.${system}.default
       ];
       pkgs = import nixpkgs {
         inherit system;
@@ -114,6 +117,7 @@
           ];
           AI = [
             pkgs.nodejs
+            inputs.codeium.packages.${pkgs.system}.codeium-lsp
             inputs.sg-nvim.packages.${pkgs.system}.default
           ];
           neonixdev = {
@@ -136,6 +140,7 @@
             neoconf-nvim
           ];
           AI = [
+            pkgs.vimPlugins.codeium-nvim
             inputs.sg-nvim.packages.${pkgs.system}.sg-nvim
           ];
           # yes these category names are arbitrary
