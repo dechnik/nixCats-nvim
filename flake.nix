@@ -30,7 +30,7 @@
     #   url = "github:neovim/neovim";
     #   flake = false;
     # };
-    # I use this for autocomplete filler especially for comments. 
+    # I use this for autocomplete filler especially for comments.
     codeium.url = "github:Exafunction/codeium.nvim";
     # I ask this questions I couldnt google the answer to and/or
     # need things I havent heard of. It has better code context than gpt.
@@ -47,7 +47,7 @@
   outputs = { self, nixpkgs, flake-utils, ... }@inputs:
     # This line makes this package available for all major systems
     # system is just a string like "x86_64-linux" or "aarch64-darwin"
-    flake-utils.lib.eachDefaultSystem (system: let
+    flake-utils.lib.eachSystem ["x86_64-linux" "aarch64-linux"] (system: let
       utils = (import ./nix/utils).utils;
 
       # see :help nixCats.flake.outputs.overlays
