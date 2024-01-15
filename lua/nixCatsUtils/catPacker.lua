@@ -109,7 +109,9 @@ if not require('nixCatsUtils').isNixCats then
     { 'nvim-neo-tree/neo-tree.nvim',
       requires = { 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
     },
-    { 'ThePrimeagen/harpoon', branch = "harpoon2" },
+    { 'ThePrimeagen/harpoon', branch = "harpoon2",
+      requires = { 'nvim-lua/plenary.nvim' },
+    },
     { 'kylechui/nvim-surround',
       requires = { 'tpope/vim-repeat', },
     },
@@ -119,7 +121,11 @@ if not require('nixCatsUtils').isNixCats then
     },
 
     -- { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, },
-
+    {
+      'sourcegraph/sg.nvim', run = 'nvim -l build/init.lua',
+      requires = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+      -- requires cargo
+    },
     -- all the rest of the setup will be done within the normal scheme, thus working regardless of what method loads the plugins.
     -- only stuff pertaining to downloading should be added to pckr.
 
