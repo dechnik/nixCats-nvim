@@ -153,6 +153,10 @@
               hlargs
             ];
             vimPlugins = {
+              StdPlugOver = with pkgs.neovimPlugins; [
+                harpoon
+                hlargs
+              ];
               # you can make a subcategory
               cmp = with pkgs.vimPlugins; [
                 # cmp stuff
@@ -184,7 +188,6 @@
                 #   ]
                 # ))
                 # other
-                harpoon
                 nvim-lspconfig
                 fidget-nvim
                 lualine-nvim
