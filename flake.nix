@@ -190,6 +190,7 @@
                 # other
                 nvim-lspconfig
                 fidget-nvim
+                obsidian-nvim
                 lualine-nvim
                 gitsigns-nvim
                 which-key-nvim
@@ -366,7 +367,7 @@
 
 
     # see :help nixCats.flake.outputs.exports
-    {
+    rec {
       # this will make a package out of each of the packageDefinitions defined above
       # and set the default package to the one named here.
       packages = utils.mkPackages nixCatsBuilder packageDefinitions "nixCats";
@@ -374,6 +375,8 @@
       # this will make an overlay out of each of the packageDefinitions defined above
       # and set the default overlay to the one named here.
       overlays = utils.mkOverlays nixCatsBuilder packageDefinitions "nixCats";
+
+      # hydraJobs = packages;
 
       # choose your package for devShell
       # and add whatever else you want in it.

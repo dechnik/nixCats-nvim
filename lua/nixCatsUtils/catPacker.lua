@@ -106,6 +106,12 @@ if not require('nixCatsUtils').isNixCats then
     { 'nvim-lualine/lualine.nvim', },
     { 'lukas-reineke/indent-blankline.nvim', },
     { 'numToStr/Comment.nvim', },
+    { 'epwalsh/obsidian.nvim',
+      tag = "*",  -- recommended, use latest release instead of latest commit
+      requires = {
+        'nvim-lua/plenary.nvim',
+      },
+    },
     { 'nvim-neo-tree/neo-tree.nvim',
       requires = { 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
     },

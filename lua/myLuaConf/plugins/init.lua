@@ -90,6 +90,26 @@ require('neo-tree').setup({
 })
 vim.keymap.set("n", "<leader>FT", "<cmd>Neotree toggle<CR>", { noremap = true, desc = '[F]ile [T]ree' })
 
+local obsidian = require("obsidian")
+obsidian.setup({
+  workspaces = {
+    {
+      name = "personal",
+      path = "~/Documents/Obsidian/Personal",
+    },
+    {
+      name = "work",
+      path = "~/Documents/Obsidian/Work",
+    },
+  },
+})
+
+vim.keymap.set('n','<leader>os','<cmd>ObsidianSearch <CR>',{ noremap = true, desc = '[O]bsidian [S]earch' })
+vim.keymap.set('n','<leader>on','<cmd>ObsidianNew <CR>',{ noremap = true, desc = '[O]bsidian [N]ew' })
+vim.keymap.set('n','<leader>ol','<cmd>ObsidianLink <CR>',{ noremap = true, desc = '[O]bsidian [L]ink' })
+vim.keymap.set('n','<leader>ot','<cmd>ObsidianTemplate <CR>',{ noremap = true, desc = '[O]bsidian [T]emplate' })
+vim.keymap.set('n','<leader>of','<cmd>ObsidianFollowLink <CR>',{ noremap = true, desc = '[O]bsidian [F]ollow Link' })
+
 require('gitsigns').setup({
     -- See `:help gitsigns.txt`
   signs = {
@@ -134,4 +154,5 @@ require('which-key').register {
   ['<leader>m'] = { name = '[M]arkdown', _ = 'which_key_ignore' },
   ['<leader>F'] = { name = '[F]ile explorer', _ = 'which_key_ignore' },
   ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
+  ['<leader>o'] = { name = '[O]bsidian', _ = 'which_key_ignore' },
 }
