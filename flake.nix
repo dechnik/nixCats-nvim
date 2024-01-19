@@ -174,6 +174,7 @@
                 lspkind-nvim
               ];
               general = with pkgs.vimPlugins; [
+                alpha-nvim
                 telescope-fzf-native-nvim
                 plenary-nvim
                 telescope-nvim

@@ -112,6 +112,9 @@ if not require('nixCatsUtils').isNixCats then
         'sindrets/diffview.nvim',
       },
     },
+    { 'goolord/alpha-nvim',
+      requires = { 'nvim-tree/nvim-web-devicons' },
+    },
     { 'epwalsh/obsidian.nvim',
       tag = "*",  -- recommended, use latest release instead of latest commit
       requires = {

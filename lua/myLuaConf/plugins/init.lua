@@ -43,6 +43,8 @@ require('lualine').setup({
 })
 require('nvim-surround').setup()
 
+require'alpha'.setup(require'alpha.themes.startify'.config)
+
 local harpoon = require("harpoon")
 
 -- REQUIRED
