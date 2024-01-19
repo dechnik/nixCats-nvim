@@ -204,6 +204,8 @@
                 nvim-surround
                 indent-blankline-nvim
                 nvim-web-devicons
+                neogit
+                diffview-nvim
               ];
             };
           };

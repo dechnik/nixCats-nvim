@@ -106,6 +106,12 @@ if not require('nixCatsUtils').isNixCats then
     { 'nvim-lualine/lualine.nvim', },
     { 'lukas-reineke/indent-blankline.nvim', },
     { 'numToStr/Comment.nvim', },
+    { 'NeogitOrg/neogit',
+      requires = {
+        'nvim-lua/plenary.nvim',
+        'sindrets/diffview.nvim',
+      },
+    },
     { 'epwalsh/obsidian.nvim',
       tag = "*",  -- recommended, use latest release instead of latest commit
       requires = {

@@ -141,6 +141,15 @@ vim.cmd([[hi GitSignsAdd guifg=#04de21]])
 vim.cmd([[hi GitSignsChange guifg=#83fce6]])
 vim.cmd([[hi GitSignsDelete guifg=#fa2525]])
 
+local neogit = require("neogit")
+neogit.setup {
+  integrations = {
+    diffview = true,
+  },
+}
+
+vim.keymap.set('n','<leader>gg','<cmd>Neogit <CR>',{ noremap = true, desc = '[G]it Neo[g]it' })
+
 require('which-key').setup()
 
 -- document existing key chains
