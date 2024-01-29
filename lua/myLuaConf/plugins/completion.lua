@@ -1,6 +1,6 @@
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
-if (nixCats('AI')) then require("codeium").setup() end
+-- if (nixCats('AI')) then require("codeium").setup() end
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
@@ -16,7 +16,8 @@ cmp.setup {
       ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
 
       menu = {
-        codeium = '[AI]',
+        -- codeium = '[AI]',
+        cody = '[CODY]',
         buffer = '[BUF]',
         nvim_lsp = '[LSP]',
         nvim_lsp_signature_help = '[LSP]',
@@ -65,7 +66,8 @@ cmp.setup {
     { name = 'nvim_lsp'--[[ , keyword_length = 3 ]] },
     { name = 'nvim_lsp_signature_help'--[[ , keyword_length = 3  ]]},
     { name = 'path' },
-    { name = 'codeium' },
+    -- { name = 'codeium' },
+    { name = 'cody' },
     { name = 'buffer' },
   },
   enabled = function()
@@ -83,7 +85,8 @@ cmp.setup.filetype('lua', {
     { name = 'nvim_lsp'--[[ , keyword_length = 3  ]]},
     { name = 'nvim_lsp_signature_help'--[[ , keyword_length = 3  ]]},
     { name = 'path' },
-    { name = 'codeium' },
+    -- { name = 'codeium' },
+    { name = 'cody' },
     { name = 'luasnip' },
     { name = 'buffer' },
   },{
