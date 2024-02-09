@@ -114,6 +114,7 @@
             universal-ctags
             ripgrep
             fd
+            nodePackages.pyright
           ];
           AI = [
             pkgs.nodejs
