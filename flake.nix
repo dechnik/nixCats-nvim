@@ -192,7 +192,8 @@
                 # other
                 nvim-lspconfig
                 fidget-nvim
-                obsidian-nvim
+                pkgs.nixCatsBuilds.obsidian-nvim
+                # obsidian-nvim
                 lualine-nvim
                 gitsigns-nvim
                 which-key-nvim

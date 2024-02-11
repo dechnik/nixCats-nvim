@@ -36,7 +36,15 @@ importName: inputs: let
         '';
       };
 
-
+      obsidian-nvim = super.vimPlugins.obsidian-nvim.overrideAttrs (oldAttrs: {
+        version = "2024-02-09";
+        src = super.fetchFromGitHub {
+          owner = "epwalsh";
+          repo = "obsidian.nvim";
+          rev = "387f5cf90718b729e1e855e66dd272039395a6dc";
+          sha256 = "sha256-W9e127ZOg2PNlrbLqTC2HwYgGucjaYb0RX+dJ+RCqJ8=";
+        };
+      });
     };
   };
 in
