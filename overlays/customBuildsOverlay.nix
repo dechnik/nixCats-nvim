@@ -37,12 +37,12 @@ importName: inputs: let
       };
 
       obsidian-nvim = super.vimPlugins.obsidian-nvim.overrideAttrs (oldAttrs: {
-        version = "2024-02-09";
+        version = "2024-02-14";
         src = super.fetchFromGitHub {
           owner = "epwalsh";
           repo = "obsidian.nvim";
-          rev = "387f5cf90718b729e1e855e66dd272039395a6dc";
-          sha256 = "sha256-W9e127ZOg2PNlrbLqTC2HwYgGucjaYb0RX+dJ+RCqJ8=";
+          rev = "0a6739d2229c8eb30396db550f3818e092088c27";
+          sha256 = "sha256-VIc5qgzqJjSv2A0v8tM25pWh+smX9DYXVsyFNTGMPbQ=";
         };
       });
     };

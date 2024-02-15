@@ -118,7 +118,7 @@ obsidian.setup({
     substitutions = {},
   },
   ui = {
-    enable = false,  -- set to false to disable all additional syntax features
+    enable = true,  -- set to false to disable all additional syntax features
     update_debounce = 200,  -- update delay after a text change (in milliseconds)
     -- Define how various check-boxes are displayed
     checkboxes = {
@@ -143,14 +143,14 @@ obsidian.setup({
     tags = { hl_group = "ObsidianTag" },
     hl_groups = {
       -- The options are passed directly to `vim.api.nvim_set_hl()`. See `:help nvim_set_hl`.
-      ObsidianTodo = { bold = true, fg = "#f78c6c" },
-      ObsidianDone = { bold = true, fg = "#89ddff" },
-      ObsidianRightArrow = { bold = true, fg = "#f78c6c" },
-      ObsidianTilde = { bold = true, fg = "#ff5370" },
-      ObsidianBullet = { bold = true, fg = "#89ddff" },
-      ObsidianRefText = { underline = true, fg = "#c792ea" },
-      ObsidianExtLinkIcon = { fg = "#c792ea" },
-      ObsidianTag = { italic = true, fg = "#89ddff" },
+      ObsidianTodo = { bold = true, fg = "#d65d0e" },
+      ObsidianDone = { bold = true, fg = "#458588" },
+      ObsidianRightArrow = { bold = true, fg = "#d65d0e" },
+      ObsidianTilde = { bold = true, fg = "#cc241d" },
+      ObsidianBullet = { bold = true, fg = "#458588" },
+      ObsidianRefText = { underline = true, fg = "#b16286" },
+      ObsidianExtLinkIcon = { fg = "#b16286" },
+      ObsidianTag = { italic = true, fg = "#458588" },
       ObsidianHighlightText = { bg = "#75662e" },
     },
   },
@@ -159,7 +159,8 @@ obsidian.setup({
 vim.keymap.set('n','<leader>os','<cmd>ObsidianSearch <CR>',{ noremap = true, desc = '[O]bsidian [S]earch' })
 vim.keymap.set('n','<leader>on','<cmd>ObsidianNew <CR>',{ noremap = true, desc = '[O]bsidian [N]ew' })
 vim.keymap.set('n','<leader>ol','<cmd>ObsidianLink <CR>',{ noremap = true, desc = '[O]bsidian [L]ink' })
-vim.keymap.set('n','<leader>ot','<cmd>ObsidianTemplate <CR>',{ noremap = true, desc = '[O]bsidian [T]emplate' })
+vim.keymap.set('n','<leader>oe','<cmd>ObsidianLinkNew <CR>',{ noremap = true, desc = '[O]bsidian Link [N]ew' })
+vim.keymap.set('n','<leader>ot','<cmd>ObsidianTags <CR>',{ noremap = true, desc = '[O]bsidian [T]ags' })
 vim.keymap.set('n','<leader>of','<cmd>ObsidianFollowLink <CR>',{ noremap = true, desc = '[O]bsidian [F]ollow Link' })
 
 require('gitsigns').setup({

@@ -78,6 +78,9 @@ vim.o.completeopt = 'menu,preview,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+-- set conceallevel to 1 (obsidian.nvim)
+vim.opt.conceallevel = 1
+
 -- [[ Disable auto comment on enter ]]
 -- See :help formatoptions
 vim.api.nvim_create_autocmd("FileType", {
