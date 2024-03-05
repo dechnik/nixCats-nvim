@@ -1,28 +1,124 @@
-
--- THIS SETUP AND catPacker ARE FOR
--- pckr THE NEOVIM PLUGIN MANAGER
--- They do nothing if your config is loaded via nix.
-
--- when using this as a normal nvim config folder
--- default_cat_value is what nixCats('anything')
--- will return.
--- you may also require myLuaConf.isNixCats
--- to determine if this was loaded as a nix config
--- you must set this here at the start
-require('nixCatsUtils').setup {
-  default_cat_value = true,
-}
-
+-- These 2 need to be set up before any plugins are loaded.
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- load the plugins via pckr
+--[[ ----------------------------------- ]]
+--[[ THIS SETUP AND catPacker ARE FOR    ]]
+--[[ pckr THE NEOVIM PLUGIN MANAGER      ]]
+--[[ They do NOTHING if your config      ]]
+--[[ is loaded via nix.                  ]]
+--[[ ----------------------------------- ]]
+--[[
+if you plan to always load your nixCats via nix,
+you can safely ignore this setup call,
+and the require('nixCatsUtils.catPacker').setup call below it.
+
+IF YOU DO NOT DO THIS SETUP CALL:
+the result will be that, when you load this folder without using nix,
+the global nixCats function which you use everywhere
+to check for categories will throw an error.
+This setup function will give it a default value.
+Of course, if you only ever download nvim with nix, this isnt needed.]]
+--[[ ----------------------------------- ]]
+--[[ This setup function will provide    ]]
+--[[ a default value for the nixCats('') ]]
+--[[ function so that it will not throw  ]]
+--[[ an error if not loaded via nixCats  ]]
+--[[ ----------------------------------- ]]
+require('nixCatsUtils').setup {
+  non_nix_value = true,
+}
+-- then load the plugins via pckr
 -- YOU are in charge of putting the plugin
 -- urls and build steps in there,
 -- and you should keep any setup functions
 -- OUT of that file, as they are ONLY loaded when this
 -- configuration is NOT loaded via nix.
-require('nixCatsUtils.catPacker')
+require('nixCatsUtils.catPacker').setup({
+--[[ ------------------------------------------ ]]
+--[[ ### DONT USE CONFIG VARIABLE ###           ]]
+--[[ unless you are ok with that instruction    ]]
+--[[ not being ran when used via nix,           ]]
+--[[ pckr will not be ran when using nix        ]]
+--[[ ------------------------------------------ ]]
+  { 'joshdick/onedark.vim', },
+  { 'nvim-tree/nvim-web-devicons', },
+
+  { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate',
+    requires = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
+  },
+  {'nvim-telescope/telescope.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'which make && make', }
+    },
+  },
+
+  { 'neovim/nvim-lspconfig',
+    requires = {
+      { 'williamboman/mason.nvim', },
+      { 'williamboman/mason-lspconfig.nvim', },
+      { 'j-hui/fidget.nvim', },
+      { 'folke/neodev.nvim', },
+      { 'folke/neoconf.nvim', },
+    },
+  },
+
+  { 'hrsh7th/nvim-cmp',
+    requires = {
+      { 'onsails/lspkind.nvim', },
+      { 'L3MON4D3/LuaSnip', },
+      { 'saadparwaiz1/cmp_luasnip', },
+      { 'hrsh7th/cmp-nvim-lsp', },
+      { 'hrsh7th/cmp-nvim-lua', },
+      { 'hrsh7th/cmp-nvim-lsp-signature-help', },
+      { 'hrsh7th/cmp-path', },
+      { 'rafamadriz/friendly-snippets', },
+      { 'hrsh7th/cmp-buffer', },
+      { 'hrsh7th/cmp-cmdline', },
+      { 'dmitmel/cmp-cmdline-history', },
+    },
+  },
+
+  { 'mfussenegger/nvim-dap',
+    requires = {
+      { 'rcarriga/nvim-dap-ui', },
+      { 'theHamsta/nvim-dap-virtual-text', },
+      { 'jay-babu/mason-nvim-dap.nvim', },
+    },
+  },
+
+  { 'm-demare/hlargs.nvim', },
+  { "stevearc/oil.nvim" },
+  { 'mbbill/undotree', },
+  { 'tpope/vim-fugitive', },
+  { 'tpope/vim-rhubarb', },
+  { 'tpope/vim-sleuth', },
+  { 'folke/which-key.nvim', },
+  { 'lewis6991/gitsigns.nvim', },
+  { 'nvim-lualine/lualine.nvim', },
+  { 'lukas-reineke/indent-blankline.nvim', },
+  { 'numToStr/Comment.nvim', },
+  { 'kylechui/nvim-surround',
+    requires = { 'tpope/vim-repeat', },
+  },
+
+  {
+    "iamcco/markdown-preview.nvim",
+    run = function() vim.fn["mkdp#util#install"]() end,
+  },
+
+  -- all the rest of the setup will be done using the normal setup functions later,
+  -- thus working regardless of what method loads the plugins.
+  -- only stuff pertaining to downloading should be added to pckr.
+
+})
+
+-- OK, again, that isnt needed if you load this setup via nix, but it is an option.
+
+
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -78,9 +174,6 @@ vim.o.completeopt = 'menu,preview,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
--- set conceallevel to 1 (obsidian.nvim)
-vim.opt.conceallevel = 1
-
 -- [[ Disable auto comment on enter ]]
 -- See :help formatoptions
 vim.api.nvim_create_autocmd("FileType", {
@@ -109,8 +202,8 @@ vim.g.netrw_banner=0
 -- See `:help vim.keymap.set()`
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = 'Moves Line Down' })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = 'Moves Line Up' })
--- vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = 'Scroll Down' })
--- vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = 'Scroll Up' })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = 'Scroll Down' })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = 'Scroll Up' })
 vim.keymap.set("n", "n", "nzzzv", { desc = 'Next Search Result' })
 vim.keymap.set("n", "N", "Nzzzv", { desc = 'Previous Search Result' })
 
@@ -127,22 +220,12 @@ vim.keymap.set('n','B','^i', { noremap = true, silent = true, desc = 'edit at be
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- Netrw
-vim.keymap.set("n", "<leader>FF", "<cmd>Explore<CR>", { noremap = true, desc = '[F]ile[F]inder' })
-vim.keymap.set("n", "<leader>Fh", "<cmd>e .<CR>", { noremap = true, desc = '[F]ile[h]ome' })
-
-
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
-
--- these 3 jankily fix which-key related errors for some reason
-vim.keymap.set('n', '<C-W>', '<c-w>', { desc = '+window'})
-vim.keymap.set({"n", "v", "x"}, '"', '"', { desc = '+registers'})
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- kickstart.nvim starts you with this. 
 -- But it constantly clobbers your system clipboard whenever you delete anything.
@@ -158,7 +241,7 @@ vim.keymap.set({"n", "v", "x"}, '<leader>yy', '"+yy', { noremap = true, silent =
 vim.keymap.set({"n", "v", "x"}, '<leader>Y', '"+yy', { noremap = true, silent = true, desc = 'Yank line to clipboard' })
 vim.keymap.set({"n", "v", "x"}, '<C-a>', 'gg0vG$', { noremap = true, silent = true, desc = 'Select all' })
 vim.keymap.set({'n', 'v', 'x'}, '<leader>p', '"+p', { noremap = true, silent = true, desc = 'Paste from clipboard' })
-vim.keymap.set('i', '<C-p>', '<C-r>+', { noremap = true, silent = true, desc = 'Paste from clipboard from within insert mode' })
+vim.keymap.set('i', '<C-p>', '<C-r><C-p>+', { noremap = true, silent = true, desc = 'Paste from clipboard from within insert mode' })
 vim.keymap.set("x", "<leader>P", '"_dP', { noremap = true, silent = true, desc = 'Paste over selection without erasing unnamed register' })
 
 -- so, my normal mode <leader>y randomly didnt accept any motions.
