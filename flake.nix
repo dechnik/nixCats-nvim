@@ -272,7 +272,7 @@
           wrapRc = true;
           withNodeJs = true;
           configDirName = "nixCats-nvim";
-          aliases = [ "vim" "vimcat" ];
+          aliases = [ "nvim" "vim" "vimcat" ];
           # nvimSRC = inputs.neovim;
         };
         # see :help nixCats.flake.outputs.packageDefinitions
