@@ -262,7 +262,7 @@ require('which-key').setup({
 
 -- document existing key chains
 require('which-key').register {
-  ['<leader>c'] = { name = '[c]ode', _ = 'which_key_ignore' },
+  ['<leader>c'] = { name = '[c]ode, [c]ody', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[d]ocument', _ = 'which_key_ignore' },
   ['<leader>g'] = { name = '[g]it', _ = 'which_key_ignore' },
   ['<leader>r'] = { name = '[r]ename', _ = 'which_key_ignore' },

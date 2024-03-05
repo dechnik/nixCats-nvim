@@ -15,6 +15,7 @@ cmp.setup {
       ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
 
       menu = {
+        cody = '[CODY]',
         buffer = '[BUF]',
         nvim_lsp = '[LSP]',
         nvim_lsp_signature_help = '[LSP]',
@@ -64,6 +65,7 @@ cmp.setup {
     { name = 'nvim_lsp_signature_help'--[[ , keyword_length = 3  ]]},
     { name = 'path' },
     { name = 'luasnip' },
+    { name = 'cody' },
     { name = 'buffer' },
   },
   enabled = function()
@@ -81,6 +83,7 @@ cmp.setup.filetype('lua', {
     { name = 'nvim_lsp'--[[ , keyword_length = 3  ]]},
     { name = 'nvim_lsp_signature_help'--[[ , keyword_length = 3  ]]},
     { name = 'path' },
+    { name = 'cody' },
     { name = 'luasnip' },
     { name = 'buffer' },
   },{

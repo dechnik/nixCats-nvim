@@ -22,6 +22,7 @@
       flake = false;
     };
 
+    sg-nvim.url = "github:sourcegraph/sg.nvim";
     # neovim = {
     #   url = "github:neovim/neovim/nightly";
     #   flake = false;
@@ -104,6 +105,9 @@
           # nix-doc tags will make your tags much better in nix
           # but only if you have nil as well for some reason
         };
+        AI = [
+          inputs.sg-nvim.packages.${pkgs.system}.default
+        ];
       };
 
       # This is for plugins that will load at startup without using packadd:
@@ -116,6 +120,9 @@
         neonixdev = with pkgs.vimPlugins; [
           neodev-nvim
           neoconf-nvim
+        ];
+        AI = [
+          inputs.sg-nvim.packages.${pkgs.system}.sg-nvim
         ];
         # yes these category names are arbitrary
         markdown = with pkgs.vimPlugins; [
@@ -263,6 +270,7 @@
         settings = {
           # will check for config in the store rather than .config
           wrapRc = true;
+          withNodeJs = true;
           configDirName = "nixCats-nvim";
           aliases = [ "vim" "vimcat" ];
           # nvimSRC = inputs.neovim;
@@ -285,6 +293,7 @@
           # by default, we dont want lazy.nvim
           # we could omit this for the same effect
           lazy = false;
+          AI = true;
           # you could also pass something else:
           themer = true;
           colorscheme = "gruvbox";
