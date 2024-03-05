@@ -42,6 +42,7 @@ require('nixCatsUtils.catPacker').setup({
 --[[ pckr will not be ran when using nix        ]]
 --[[ ------------------------------------------ ]]
   { 'joshdick/onedark.vim', },
+  { 'ellisonleao/gruvbox.nvim', },
   { 'nvim-tree/nvim-web-devicons', },
 
   { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate',

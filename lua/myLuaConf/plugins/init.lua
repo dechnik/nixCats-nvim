@@ -1,6 +1,6 @@
 local colorschemeName = nixCats('colorscheme')
 if not require('nixCatsUtils').isNixCats then
-  colorschemeName = 'onedark'
+  colorschemeName = 'gruvbox'
 end
 vim.cmd.colorscheme(colorschemeName)
 

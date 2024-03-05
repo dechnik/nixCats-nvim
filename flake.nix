@@ -189,6 +189,7 @@
               "catppuccin-mocha" = catppuccin-nvim;
               "tokyonight" = tokyonight-nvim;
               "tokyonight-day" = tokyonight-nvim;
+              "gruvbox" = gruvbox-nvim;
             }
           );
           # This is obviously a fairly basic usecase for this, but still nice.
@@ -284,7 +285,7 @@
           lazy = false;
           # you could also pass something else:
           themer = true;
-          colorscheme = "onedark";
+          colorscheme = "gruvbox";
           theBestCat = "says meow!!";
           theWorstCat = {
             thing'1 = [ "MEOW" "HISSS" ];
