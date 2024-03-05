@@ -106,6 +106,15 @@ require('nixCatsUtils.catPacker').setup({
     requires = { 'tpope/vim-repeat', },
   },
 
+  { 'goolord/alpha-nvim',
+    requires = { 'nvim-tree/nvim-web-devicons' },
+  },
+  { 'epwalsh/obsidian.nvim',
+    tag = "*",  -- recommended, use latest release instead of latest commit
+    requires = {
+      'nvim-lua/plenary.nvim',
+    },
+  },
   {
     "iamcco/markdown-preview.nvim",
     run = function() vim.fn["mkdp#util#install"]() end,
