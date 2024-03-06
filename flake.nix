@@ -98,6 +98,8 @@
           universal-ctags
           ripgrep
           fd
+          python3.pkgs.black
+          pyright
         ];
         neonixdev = {
           # also you can do this.
