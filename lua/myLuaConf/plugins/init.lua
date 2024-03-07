@@ -256,6 +256,15 @@ require('which-key').setup({
     -- filetypes = { "oil" },
   },
 })
+local neogit = require("neogit")
+neogit.setup {
+  integrations = {
+    diffview = true,
+  },
+}
+
+vim.keymap.set('n','<leader>gg','<cmd>Neogit <CR>',{ noremap = true, desc = '[g]it neo[g]it' })
+
 -- I had these errors before nixos, but I fixed them in a dumb way.
 -- I simply bound them again myself and it mostly worked...
 -- this is the better way to prevent the errors.

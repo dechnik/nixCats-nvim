@@ -115,6 +115,12 @@ require('nixCatsUtils.catPacker').setup({
       'nvim-lua/plenary.nvim',
     },
   },
+  { 'NeogitOrg/neogit',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'sindrets/diffview.nvim',
+    },
+  },
   {
     "iamcco/markdown-preview.nvim",
     run = function() vim.fn["mkdp#util#install"]() end,

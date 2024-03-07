@@ -157,6 +157,7 @@
             general = with pkgs.vimPlugins; [
               alpha-nvim
               obsidian-nvim
+              neogit
               telescope-fzf-native-nvim
               plenary-nvim
               telescope-nvim
