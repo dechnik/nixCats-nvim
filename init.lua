@@ -121,6 +121,9 @@ require('nixCatsUtils.catPacker').setup({
       'sindrets/diffview.nvim',
     },
   },
+  { 'ThePrimeagen/harpoon', branch = "harpoon2",
+    requires = { 'nvim-lua/plenary.nvim' },
+  },
   {
     "iamcco/markdown-preview.nvim",
     run = function() vim.fn["mkdp#util#install"]() end,

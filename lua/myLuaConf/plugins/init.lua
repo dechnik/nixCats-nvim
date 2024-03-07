@@ -47,6 +47,20 @@ require('nvim-surround').setup()
 
 require'alpha'.setup(require'alpha.themes.startify'.config)
 
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup({})
+-- REQUIRED
+
+vim.keymap.set("n", "<leader>ha", function() harpoon:list():append() end, { noremap = true, silent = true, desc = 'append to harpoon' })
+vim.keymap.set("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { noremap = true, silent = true, desc = 'open harpoon menu' })
+
+vim.keymap.set("n", "<leader>h1", function() harpoon:list():select(1) end, { noremap = true, silent = true, desc = 'harpoon 1' })
+vim.keymap.set("n", "<leader>h2", function() harpoon:list():select(2) end, { noremap = true, silent = true, desc = 'harpoon 2' })
+vim.keymap.set("n", "<leader>h3", function() harpoon:list():select(3) end, { noremap = true, silent = true, desc = 'harpoon 3' })
+vim.keymap.set("n", "<leader>h4", function() harpoon:list():select(4) end, { noremap = true, silent = true, desc = 'harpoon 4' })
+
 local obsidian = require("obsidian")
 obsidian.setup({
   workspaces = {
@@ -274,6 +288,7 @@ require('which-key').register {
   ['<leader>c'] = { name = '[c]ode, [c]ody', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[d]ocument', _ = 'which_key_ignore' },
   ['<leader>g'] = { name = '[g]it', _ = 'which_key_ignore' },
+  ['<leader>h'] = { name = '[h]arpoon', _ = 'which_key_ignore' },
   ['<leader>r'] = { name = '[r]ename', _ = 'which_key_ignore' },
   ['<leader>s'] = { name = '[s]earch', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[w]orkspace', _ = 'which_key_ignore' },

@@ -158,6 +158,7 @@
               alpha-nvim
               obsidian-nvim
               neogit
+              harpoon2
               telescope-fzf-native-nvim
               plenary-nvim
               telescope-nvim
