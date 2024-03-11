@@ -27,7 +27,6 @@ require('hlargs').setup {
 vim.cmd([[hi clear @lsp.type.parameter]])
 vim.cmd([[hi link @lsp.type.parameter Hlargs]])
 require('Comment').setup()
-require('fidget').setup()
 require('lualine').setup({
   options = {
     icons_enabled = false,
@@ -42,95 +41,24 @@ require('lualine').setup({
       },
     },
   },
+  inactive_sections = {
+    lualine_b = {
+      {
+        'filename', path = 3, status = true,
+      },
+    },
+    lualine_x = {'filetype'},
+  },
+  tabline = {
+    lualine_a = { 'buffers' },
+    -- if you use lualine-lsp-progress, I have mine here instead of fidget
+    -- lualine_b = { 'lsp_progress', },
+    lualine_z = { 'tabs' }
+  },
 })
+require('fidget').setup({})
+
 require('nvim-surround').setup()
-
-require'alpha'.setup(require'alpha.themes.startify'.config)
-
-local harpoon = require("harpoon")
-
--- REQUIRED
-harpoon:setup({})
--- REQUIRED
-
-vim.keymap.set("n", "<leader>ha", function() harpoon:list():append() end, { noremap = true, silent = true, desc = 'append to harpoon' })
-vim.keymap.set("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { noremap = true, silent = true, desc = 'open harpoon menu' })
-
-vim.keymap.set("n", "<leader>h1", function() harpoon:list():select(1) end, { noremap = true, silent = true, desc = 'harpoon 1' })
-vim.keymap.set("n", "<leader>h2", function() harpoon:list():select(2) end, { noremap = true, silent = true, desc = 'harpoon 2' })
-vim.keymap.set("n", "<leader>h3", function() harpoon:list():select(3) end, { noremap = true, silent = true, desc = 'harpoon 3' })
-vim.keymap.set("n", "<leader>h4", function() harpoon:list():select(4) end, { noremap = true, silent = true, desc = 'harpoon 4' })
-
-local obsidian = require("obsidian")
-obsidian.setup({
-  workspaces = {
-    {
-      name = "vault",
-      path = "~/Documents/Obsidian",
-    },
-  },
-  daily_notes = {
-    -- Optional, if you keep daily notes in a separate directory.
-    folder = "Daily",
-    -- Optional, if you want to change the date format for the ID of daily notes.
-    date_format = "%Y-%m-%d",
-    -- Optional, if you want to change the date format of the default alias of daily notes.
-    alias_format = "%B %-d, %Y",
-    -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-    template = nil
-  },
-  templates = {
-    subdir = "templates",
-    date_format = "%Y-%m-%d",
-    time_format = "%H:%M",
-    -- A map for custom variables, the key should be the variable and the value a function
-    substitutions = {},
-  },
-  ui = {
-    enable = false,  -- set to false to disable all additional syntax features
-    update_debounce = 200,  -- update delay after a text change (in milliseconds)
-    -- Define how various check-boxes are displayed
-    checkboxes = {
-      -- NOTE: the 'char' value has to be a single character, and the highlight groups are defined below.
-      [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
-      ["x"] = { char = "", hl_group = "ObsidianDone" },
-      [">"] = { char = "", hl_group = "ObsidianRightArrow" },
-      ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
-      -- Replace the above with this if you don't have a patched font:
-      -- [" "] = { char = "☐", hl_group = "ObsidianTodo" },
-      -- ["x"] = { char = "✔", hl_group = "ObsidianDone" },
-
-      -- You can also add more custom ones...
-    },
-    -- Use bullet marks for non-checkbox lists.
-    bullets = { char = "•", hl_group = "ObsidianBullet" },
-    external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-    -- Replace the above with this if you don't have a patched font:
-    -- external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-    reference_text = { hl_group = "ObsidianRefText" },
-    highlight_text = { hl_group = "ObsidianHighlightText" },
-    tags = { hl_group = "ObsidianTag" },
-    hl_groups = {
-      -- The options are passed directly to `vim.api.nvim_set_hl()`. See `:help nvim_set_hl`.
-      ObsidianTodo = { bold = true, fg = "#d65d0e" },
-      ObsidianDone = { bold = true, fg = "#458588" },
-      ObsidianRightArrow = { bold = true, fg = "#d65d0e" },
-      ObsidianTilde = { bold = true, fg = "#cc241d" },
-      ObsidianBullet = { bold = true, fg = "#458588" },
-      ObsidianRefText = { underline = true, fg = "#b16286" },
-      ObsidianExtLinkIcon = { fg = "#b16286" },
-      ObsidianTag = { italic = true, fg = "#458588" },
-      ObsidianHighlightText = { bg = "#75662e" },
-    },
-  },
-})
-
-vim.keymap.set('n','<leader>os','<cmd>ObsidianSearch <CR>',{ noremap = true, desc = '[O]bsidian [S]earch' })
-vim.keymap.set('n','<leader>on','<cmd>ObsidianNew <CR>',{ noremap = true, desc = '[O]bsidian [N]ew' })
-vim.keymap.set('n','<leader>ol','<cmd>ObsidianLink <CR>',{ noremap = true, desc = '[O]bsidian [L]ink' })
-vim.keymap.set('n','<leader>oe','<cmd>ObsidianLinkNew <CR>',{ noremap = true, desc = '[O]bsidian Link [N]ew' })
-vim.keymap.set('n','<leader>ot','<cmd>ObsidianTags <CR>',{ noremap = true, desc = '[O]bsidian [T]ags' })
-vim.keymap.set('n','<leader>of','<cmd>ObsidianFollowLink <CR>',{ noremap = true, desc = '[O]bsidian [F]ollow Link' })
 
 -- indent-blank-line
 require("ibl").setup()
@@ -270,6 +198,95 @@ require('which-key').setup({
     -- filetypes = { "oil" },
   },
 })
+
+require'alpha'.setup(require'alpha.themes.startify'.config)
+
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup({})
+-- REQUIRED
+
+vim.keymap.set("n", "<leader>ha", function() harpoon:list():append() end, { noremap = true, silent = true, desc = 'append to harpoon' })
+vim.keymap.set("n", "<leader>hh", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { noremap = true, silent = true, desc = 'open harpoon menu' })
+
+vim.keymap.set("n", "<leader>h1", function() harpoon:list():select(1) end, { noremap = true, silent = true, desc = 'harpoon 1' })
+vim.keymap.set("n", "<leader>h2", function() harpoon:list():select(2) end, { noremap = true, silent = true, desc = 'harpoon 2' })
+vim.keymap.set("n", "<leader>h3", function() harpoon:list():select(3) end, { noremap = true, silent = true, desc = 'harpoon 3' })
+vim.keymap.set("n", "<leader>h4", function() harpoon:list():select(4) end, { noremap = true, silent = true, desc = 'harpoon 4' })
+
+local obsidian = require("obsidian")
+obsidian.setup({
+  workspaces = {
+    {
+      name = "vault",
+      path = "~/Documents/Obsidian",
+    },
+  },
+  daily_notes = {
+    -- Optional, if you keep daily notes in a separate directory.
+    folder = "Daily",
+    -- Optional, if you want to change the date format for the ID of daily notes.
+    date_format = "%Y-%m-%d",
+    -- Optional, if you want to change the date format of the default alias of daily notes.
+    alias_format = "%B %-d, %Y",
+    -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
+    template = nil
+  },
+  templates = {
+    subdir = "templates",
+    date_format = "%Y-%m-%d",
+    time_format = "%H:%M",
+    -- A map for custom variables, the key should be the variable and the value a function
+    substitutions = {},
+  },
+  ui = {
+    enable = false,  -- set to false to disable all additional syntax features
+    update_debounce = 200,  -- update delay after a text change (in milliseconds)
+    -- Define how various check-boxes are displayed
+    checkboxes = {
+      -- NOTE: the 'char' value has to be a single character, and the highlight groups are defined below.
+      [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
+      ["x"] = { char = "", hl_group = "ObsidianDone" },
+      [">"] = { char = "", hl_group = "ObsidianRightArrow" },
+      ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
+      -- Replace the above with this if you don't have a patched font:
+      -- [" "] = { char = "☐", hl_group = "ObsidianTodo" },
+      -- ["x"] = { char = "✔", hl_group = "ObsidianDone" },
+
+      -- You can also add more custom ones...
+    },
+    -- Use bullet marks for non-checkbox lists.
+    bullets = { char = "•", hl_group = "ObsidianBullet" },
+    external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
+    -- Replace the above with this if you don't have a patched font:
+    -- external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
+    reference_text = { hl_group = "ObsidianRefText" },
+    highlight_text = { hl_group = "ObsidianHighlightText" },
+    tags = { hl_group = "ObsidianTag" },
+    hl_groups = {
+      -- The options are passed directly to `vim.api.nvim_set_hl()`. See `:help nvim_set_hl`.
+      ObsidianTodo = { bold = true, fg = "#d65d0e" },
+      ObsidianDone = { bold = true, fg = "#458588" },
+      ObsidianRightArrow = { bold = true, fg = "#d65d0e" },
+      ObsidianTilde = { bold = true, fg = "#cc241d" },
+      ObsidianBullet = { bold = true, fg = "#458588" },
+      ObsidianRefText = { underline = true, fg = "#b16286" },
+      ObsidianExtLinkIcon = { fg = "#b16286" },
+      ObsidianTag = { italic = true, fg = "#458588" },
+      ObsidianHighlightText = { bg = "#75662e" },
+    },
+  },
+})
+
+vim.keymap.set('n','<leader>os','<cmd>ObsidianSearch <CR>',{ noremap = true, desc = '[O]bsidian [S]earch' })
+vim.keymap.set('n','<leader>on','<cmd>ObsidianNew <CR>',{ noremap = true, desc = '[O]bsidian [N]ew' })
+vim.keymap.set('n','<leader>ol','<cmd>ObsidianLink <CR>',{ noremap = true, desc = '[O]bsidian [L]ink' })
+vim.keymap.set('n','<leader>oe','<cmd>ObsidianLinkNew <CR>',{ noremap = true, desc = '[O]bsidian Link [N]ew' })
+vim.keymap.set('n','<leader>ot','<cmd>ObsidianTags <CR>',{ noremap = true, desc = '[O]bsidian [T]ags' })
+vim.keymap.set('n','<leader>of','<cmd>ObsidianFollowLink <CR>',{ noremap = true, desc = '[O]bsidian [F]ollow Link' })
+
+
 local neogit = require("neogit")
 neogit.setup {
   integrations = {
@@ -295,4 +312,5 @@ require('which-key').register {
   ['<leader>m'] = { name = '[m]arkdown', _ = 'which_key_ignore' },
   ['<leader>t'] = { name = '[t]oggles', _ = 'which_key_ignore' },
   ['<leader>o'] = { name = '[o]bsidian', _ = 'which_key_ignore' },
+  ['<leader><leader>'] = { name = 'buffer commands', _ = 'which_key_ignore' },
 }
