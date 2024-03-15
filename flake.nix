@@ -100,6 +100,7 @@
           fd
           python3.pkgs.black
           pyright
+          nodePackages.bash-language-server
         ];
         neonixdev = {
           # also you can do this.
