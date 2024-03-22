@@ -86,7 +86,7 @@
     # get the path to this python environment
     # in your lua config via
     # vim.g.python3_host_prog
-    # or run from nvim terminal via :!nvim-python3
+    # or run from nvim terminal via :!<packagename>-python3
     extraPython3Packages = {
       test = (_:[]);
     };
@@ -110,6 +110,7 @@
         # you may not alias to nvim
         # your alias may not conflict with your other packages.
         aliases = [ "vim" ];
+        # caution: this option must be the same for all packages.
         # nvimSRC = inputs.neovim;
       };
       # and a set of categories that you want

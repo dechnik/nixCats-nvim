@@ -249,7 +249,7 @@
       # get the path to this python environment
       # in your lua config via
       # vim.g.python3_host_prog
-      # or run from nvim terminal via :!nvim-python3
+      # or run from nvim terminal via :!<packagename>-python3
       extraPython3Packages = {
         test = (_:[]);
       };
@@ -285,6 +285,7 @@
           withNodeJs = true;
           configDirName = "nixCats-nvim";
           aliases = [ "vim" "vimcat" ];
+          # caution: this option must be the same for all packages.
           # nvimSRC = inputs.neovim;
         };
         # see :help nixCats.flake.outputs.packageDefinitions
