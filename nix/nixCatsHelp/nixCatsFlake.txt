@@ -205,6 +205,10 @@ These are the things you can return:
   a flexible set of categories, each containing optional plugins.
   Optional plugins need to be added with packadd before being required.
 
+<sharedLibraries>
+  a flexible set of categories, each containing a derivation for
+  a runtime shared library. Will be prepended to the LD_LIBRARY_PATH variable.
+
 <environmentVariables>
   a flexible set of categories, each containing an ATTRIBUTE SET of 
   EnvironmentVariableName = "EnvironmentVariableValue";
@@ -433,6 +437,7 @@ These are the defaults:
       # see :help `$NVIM_APPNAME`
       configDirName = "nvim";
 
+      ### CAUTION: These 2 options must be the same for ALL nvim packages!! ###
       # use this to pin a specific neovim version.
       # import it in flake inputs with flake = false,
       # then put inputs.neovim (or whatever you called it) here.

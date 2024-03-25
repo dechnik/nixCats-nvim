@@ -53,6 +53,7 @@ let
     startupPlugins = {};
     optionalPlugins = {};
     lspsAndRuntimeDeps = {};
+    sharedLibraries = {};
     propagatedBuildInputs = {};
     environmentVariables = {};
     extraWrapperArgs = {};
@@ -72,7 +73,7 @@ let
   lspsAndRuntimeDeps propagatedBuildInputs
   environmentVariables extraWrapperArgs 
   extraPythonPackages extraPython3Packages
-  extraLuaPackages optionalLuaAdditions;
+  extraLuaPackages optionalLuaAdditions sharedLibraries;
 
   thisPackage = packageDefFunction.${name} { pkgs = fpkgs; };
   settings = {
@@ -174,8 +175,7 @@ in
 
     # this is what allows for dynamic packaging in flake.nix
     # It includes categories marked as true, then flattens to a single list
-    filterAndFlatten = (import ../utils)
-          .filterAndFlatten categories;
+    filterAndFlatten = (import ../utils).filterAndFlatten categories;
 
     buildInputs = [ fpkgs.stdenv.cc.cc.lib ] ++ fpkgs.lib.unique (filterAndFlatten propagatedBuildInputs);
     start = fpkgs.lib.unique (filterAndFlatten startupPlugins);
@@ -200,13 +200,6 @@ in
     FandF_envVarSet = filterAndFlattenMapInnerAttrs 
           (name: value: ''--set ${name} "${value}"'');
 
-    FandF_passWrapperArgs = filterAndFlattenMapInner (value: value);
-
-    # add any dependencies/lsps/whatever we need available at runtime
-    FandF_WrapRuntimeDeps = filterAndFlattenMapInner (value:
-      ''--prefix PATH : "${fpkgs.lib.makeBinPath [ value ] }"''
-    );
-
     # extraPythonPackages and the like require FUNCTIONS that return lists.
     # so we make a function that returns a function that returns lists.
     # this is used for the fields in the wrapper where the default value is (_: [])
@@ -219,16 +212,20 @@ in
       uniquifiedList);
 
     # cat our args
-    extraMakeWrapperArgs = builtins.concatStringsSep " " (
+    extraMakeWrapperArgs = let 
+      linkables = fpkgs.lib.unique (filterAndFlatten sharedLibraries);
+      pathEnv = fpkgs.lib.unique (filterAndFlatten lspsAndRuntimeDeps);
+    in builtins.concatStringsSep " " (
       # this sets the name of the folder to look for nvim stuff in
       (if settings.configDirName != null
         && settings.configDirName != ""
         || settings.configDirName != "nvim"
         then [ ''--set NVIM_APPNAME "${settings.configDirName}"'' ] else [])
       # and these are our other now sorted args
-      ++ (fpkgs.lib.unique (FandF_WrapRuntimeDeps lspsAndRuntimeDeps))
+      ++ (if pathEnv != [] then [ ''--prefix PATH : "${fpkgs.lib.makeBinPath pathEnv }"'' ] else [])
+      ++ (if linkables != [] then [ ''--prefix LD_LIBRARY_PATH : "${fpkgs.lib.makeLibraryPath linkables }"'' ] else [])
       ++ (fpkgs.lib.unique (FandF_envVarSet environmentVariables))
-      ++ (fpkgs.lib.unique (FandF_passWrapperArgs extraWrapperArgs))
+      ++ (fpkgs.lib.unique (filterAndFlatten extraWrapperArgs))
       # https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/setup-hooks/make-wrapper.sh
     );
 
