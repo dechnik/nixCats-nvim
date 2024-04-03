@@ -247,7 +247,10 @@ based on the packageDefinitions set you provide,
 where by including categoryname = true; you enable that category.
 :help `nixCats.flake.outputs.packageDefinitions`
 
-It does this recursively.
+It will remove duplicate items, so feel free to include the same thing in
+multiple categories if it suits your purposes.
+
+It does this recursively. (explained below)
                             *nixCats.flake.outputs.categoryDefinitions.scheme*
 
 If, inside one of these main sets, you had another set,
@@ -436,6 +439,16 @@ These are the defaults:
       # It is also helpful to prevent other nvim packages sharing data folders.
       # see :help `$NVIM_APPNAME`
       configDirName = "nvim";
+
+      # These 2 options are useful for when you want to allow your dev shells
+      # to override things such as lsps and shared libraries that you have
+      # already in your configuration.
+      suffix-path = false;
+      # causes lspsAndDeps to be added to the END of
+      # PATH instead of the start
+      suffix-LD = false;
+      # causes sharedLibraries to be added to the END of
+      # LD_LIBRARY_PATH instead of the start
 
       ### CAUTION: These 2 options must be the same for ALL nvim packages!! ###
       # use this to pin a specific neovim version.
