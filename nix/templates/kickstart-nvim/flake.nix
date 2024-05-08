@@ -193,9 +193,6 @@
 
       # lists of the functions you would have passed to
       # python.withPackages or lua.withPackages
-      extraPythonPackages = {
-        test = (_:[]);
-      };
       extraPython3Packages = {
         test = (_:[]);
       };
@@ -225,8 +222,6 @@
           wrapRc = true;
           configDirName = "testerstart-nvim";
           aliases = [ "vi" "vim" ];
-          # caution: this option must be the same for all packages.
-          # nvimSRC = inputs.neovim;
         };
         # see :help nixCats.flake.outputs.packageDefinitions
         categories = {

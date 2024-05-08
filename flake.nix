@@ -21,11 +21,16 @@
       url = "github:m-demare/hlargs.nvim";
       flake = false;
     };
+    "plugins-nvim-nio" = {
+      url = "github:nvim-neotest/nvim-nio";
+      flake = false;
+    };
 
     sg-nvim.url = "github:sourcegraph/sg.nvim";
-    # neovim = {
-    #   url = "github:neovim/neovim/nightly";
-    #   flake = false;
+    # neovim-flake = {
+    #   url = "github:neovim/neovim/nightly?dir=contrib";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.flake-utils.follows = "flake-utils";
     # };
 
   };
@@ -108,6 +113,12 @@
           # nix-doc tags will make your tags much better in nix
           # but only if you have nil as well for some reason
         };
+        lint = with pkgs; [
+        ];
+        debug = with pkgs; [
+        ];
+        format = with pkgs; [
+        ];
         AI = [
           inputs.sg-nvim.packages.${pkgs.system}.default
         ];
@@ -116,9 +127,16 @@
       # This is for plugins that will load at startup without using packadd:
       startupPlugins = {
         debug = with pkgs.vimPlugins; [
+          pkgs.neovimPlugins.nvim-nio
           nvim-dap
           nvim-dap-ui
           nvim-dap-virtual-text
+        ];
+        lint = with pkgs.vimPlugins; [
+          nvim-lint
+        ];
+        format = with pkgs.vimPlugins; [
+          conform-nvim
         ];
         neonixdev = with pkgs.vimPlugins; [
           neodev-nvim
@@ -161,6 +179,7 @@
               neogit
               harpoon2
               telescope-fzf-native-nvim
+              telescope-ui-select-nvim
               plenary-nvim
               telescope-nvim
               # treesitter
@@ -261,9 +280,6 @@
       extraPython3Packages = {
         test = (_:[]);
       };
-      extraPythonPackages = {
-        test = (_:[]);
-      };
       # populates $LUA_PATH and $LUA_CPATH
       extraLuaPackages = {
         test = [ (_:[]) ];
@@ -294,7 +310,7 @@
           configDirName = "nixCats-nvim";
           aliases = [ "vim" "vimcat" ];
           # caution: this option must be the same for all packages.
-          # nvimSRC = inputs.neovim;
+          # neovim-unwrapped = inputs.neovim-flake.packages.${pkgs.system}.neovim;
         };
         # see :help nixCats.flake.outputs.packageDefinitions
         categories = {
@@ -303,6 +319,8 @@
           general.vimPlugins = true;
           general.gitPlugins = true;
           custom = true;
+          lint = true;
+          format = true;
           neonixdev = true;
           test = {
             subtest1 = true;
@@ -340,6 +358,7 @@
           # will now look for nixCats-nvim within .config and .local and others
           configDirName = "nixCats-nvim";
           aliases = [ "testCat" ];
+          # neovim-unwrapped = inputs.neovim-flake.packages.${pkgs.system}.neovim;
         };
         categories = {
           generalBuildInputs = true;
@@ -347,6 +366,8 @@
           general = true;
           custom = true;
           neonixdev = true;
+          lint = true;
+          format = true;
           test = true;
           lspDebugMode = false;
           themer = true;

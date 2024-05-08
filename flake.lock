@@ -362,6 +362,22 @@
         "type": "github"
       }
     },
+    "plugins-nvim-nio": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1714664267,
+        "narHash": "sha256-VfoJOXXtMhalFcnfhVzweq7TVmB8WjRP+Z5Z5Z24Pzc=",
+        "owner": "nvim-neotest",
+        "repo": "nvim-nio",
+        "rev": "8765cbc4d0c629c8158a5341e1b4305fd93c3a90",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-neotest",
+        "repo": "nvim-nio",
+        "type": "github"
+      }
+    },
     "pre-commit-nix": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -389,6 +405,7 @@
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
         "plugins-hlargs": "plugins-hlargs",
+        "plugins-nvim-nio": "plugins-nvim-nio",
         "sg-nvim": "sg-nvim"
       }
     },
