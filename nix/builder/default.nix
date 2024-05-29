@@ -62,18 +62,20 @@ let
   # So you put in a set of categories of lists of them.
     extraPythonPackages = {};
     extraPython3Packages = {};
+    extraPython3wrapperArgs = {};
   # same thing except for lua.withPackages
     extraLuaPackages = {};
   # only for use when importing flake in a flake 
   # and need to only add a bit of lua for an added plugin
     optionalLuaAdditions = {};
-  } // (categoryDefFunction ({ inherit settings categories name; pkgs = fpkgs; }));
+  } // (categoryDefFunction { inherit settings categories name; pkgs = fpkgs; });
   inherit (catDefs) startupPlugins
   optionalPlugins lspsAndRuntimeDeps
   propagatedBuildInputs environmentVariables
   extraWrapperArgs extraPythonPackages
   extraPython3Packages extraLuaPackages
-  optionalLuaAdditions sharedLibraries;
+  optionalLuaAdditions extraPython3wrapperArgs
+  sharedLibraries;
 
   thisPackage = packageDefinitions.${name} { pkgs = fpkgs; };
   settings = {
@@ -91,6 +93,7 @@ let
     neovim-unwrapped = null;
     suffix-path = false;
     suffix-LD = false;
+    disablePythonSafePath = false;
   } // thisPackage.settings;
 
   categories = thisPackage.categories;
@@ -123,9 +126,9 @@ in
         };
       init = fpkgs.writeText "init.lua" (builtins.readFile ./nixCats.lua);
       # using writeText instead of builtins.toFile allows us to pass derivation names and paths.
-      cats = fpkgs.writeText "cats.lua" ''return ${(import ../utils).luaTablePrinter categoriesPlus}'';
-      settingsTable = fpkgs.writeText "settings.lua" ''return ${(import ../utils).luaTablePrinter settingsPlus}'';
-      depsTable = fpkgs.writeText "included.lua" ''return ${(import ../utils).luaTablePrinter allPluginDeps}'';
+      cats = fpkgs.writeText "cats.lua" ''return ${(import ./ncTools.nix).luaTablePrinter categoriesPlus}'';
+      settingsTable = fpkgs.writeText "settings.lua" ''return ${(import ./ncTools.nix).luaTablePrinter settingsPlus}'';
+      depsTable = fpkgs.writeText "included.lua" ''return ${(import ./ncTools.nix).luaTablePrinter allPluginDeps}'';
     in {
       name = "nixCats";
       builder = fpkgs.writeText "builder.sh" /* bash */ ''
@@ -181,7 +184,7 @@ in
 
     # this is what allows for dynamic packaging in flake.nix
     # It includes categories marked as true, then flattens to a single list
-    filterAndFlatten = (import ../utils).filterAndFlatten categories;
+    filterAndFlatten = (import ./ncTools.nix).filterAndFlatten categories;
 
     buildInputs = [ fpkgs.stdenv.cc.cc.lib ] ++ fpkgs.lib.unique (filterAndFlatten propagatedBuildInputs);
     start = fpkgs.lib.unique (filterAndFlatten startupPlugins);
@@ -192,13 +195,13 @@ in
     # and then maps name and value
     # into a list based on the function we provide it.
     # its like a flatmap function but with a built in filter for category.
-    filterAndFlattenMapInnerAttrs = (import ../utils)
+    filterAndFlattenMapInnerAttrs = (import ./ncTools.nix)
           .filterAndFlattenMapInnerAttrs categories;
     # This one filters and flattens attrs of lists and then maps value
     # into a list of strings based on the function we provide it.
     # it the same as above but for a mapping function with 1 argument
     # because the inner is a list not a set.
-    filterAndFlattenMapInner = (import ../utils)
+    filterAndFlattenMapInner = (import ./ncTools.nix)
           .filterAndFlattenMapInner categories;
 
     # and then applied to give us a 1 argument function:
@@ -211,7 +214,7 @@ in
     # this is used for the fields in the wrapper where the default value is (_: [])
     combineCatsOfFuncs = section:
       (x: let
-        appliedfunctions = filterAndFlattenMapInner (value: (value) x ) section;
+        appliedfunctions = filterAndFlattenMapInner (value: value x ) section;
         combinedFuncRes = builtins.concatLists appliedfunctions;
         uniquifiedList = fpkgs.lib.unique combinedFuncRes;
       in
@@ -241,6 +244,8 @@ in
       # https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/setup-hooks/make-wrapper.sh
     );
 
+    python3wrapperArgs = fpkgs.lib.unique ((filterAndFlatten extraPython3wrapperArgs) ++ (if settings.disablePythonSafePath then ["--unset PYTHONSAFEPATH"] else []));
+
     # add our propagated build dependencies
     baseNvimUnwrapped = if settings.neovim-unwrapped == null then fpkgs.neovim-unwrapped else settings.neovim-unwrapped;
     myNeovimUnwrapped = baseNvimUnwrapped.overrideAttrs (prev: {
@@ -252,7 +257,7 @@ in
   # add our lsps and plugins and our config, and wrap it all up!
 (import ./wrapNeovim.nix).wrapNeovim fpkgs myNeovimUnwrapped {
   nixCats_passthru = nixCats_passthru // {
-    keepLuaBuilder = (import ../utils).utils.baseBuilder luaPath;
+    keepLuaBuilder = import ./. luaPath;
     nixCats_packageName = name;
     utils = (import ../utils).utils;
     categoryDefinitions = categoryDefFunction;
@@ -274,6 +279,7 @@ in
     /* the function you would have passed to python.withPackages */
   withPython3 = settings.withPython3;
   extraPython3Packages = combineCatsOfFuncs extraPython3Packages;
+  extraPython3wrapperArgs = python3wrapperArgs;
     /* the function you would have passed to lua.withPackages */
   extraLuaPackages = combineCatsOfFuncs extraLuaPackages;
 }

@@ -116,7 +116,8 @@
         # your alias may not conflict with your other packages.
         aliases = [ "vim" ];
         # caution: this option must be the same for all packages.
-        # nvimSRC = inputs.neovim;
+        # or at least, all packages that are to be installed simultaneously.
+        # neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
       };
       # and a set of categories that you want
       # (and other information to pass to lua)

@@ -42,6 +42,7 @@ let
     , customAliases ? null
     , nixCats_passthru ? {}
     , luaEnv
+    , extraPython3wrapperArgs ? []
     , ...
   }:
   assert withPython2 -> throw "Python2 support has been removed from the neovim wrapper, please remove withPython2 and python2Env.";
@@ -137,7 +138,7 @@ let
           --replace 'Exec=nvim %F' 'Exec=${nixCats_packageName} %F'
       ''
       + lib.optionalString finalAttrs.withPython3 ''
-        makeWrapper ${python3Env.interpreter} $out/bin/${nixCats_packageName}-python3 --unset PYTHONPATH
+        makeWrapper ${python3Env.interpreter} $out/bin/${nixCats_packageName}-python3 --unset PYTHONPATH ${builtins.concatStringsSep " " extraPython3wrapperArgs}
       ''
       + lib.optionalString (finalAttrs.rubyEnv != null) ''
         ln -s ${finalAttrs.rubyEnv}/bin/neovim-ruby-host $out/bin/${nixCats_packageName}-ruby

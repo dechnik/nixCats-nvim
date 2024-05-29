@@ -232,6 +232,9 @@ github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/setup-hooks/make-wrapper
   vim.g.python3_host_prog
   or run from nvim terminal via :!<packagename>-python3
 
+<extraPython3wrapperArgs>
+  the same as extraWrapperArgs but for bundled python3 executable
+
   <optionalLuaAdditions>* It can also take 
     a flexible set of categories, each containing a lua string
     that will be ran after sourcing your init.lua
@@ -426,6 +429,10 @@ These are the defaults:
       withRuby = true;
       extraName = "";
       withPython3 = true;
+      # unsets PYTHONSAFEPATH variable.
+      # Can cause issues with reproducibility,
+      # can fix some stuff
+      disablePythonSafePath = false;
 
       # do you want to package the lua from this flake in the store?
       # or would you rather it just read it in your .config/<configDirName>?
@@ -450,9 +457,11 @@ These are the defaults:
       # causes sharedLibraries to be added to the END of
       # LD_LIBRARY_PATH instead of the start
 
-      ### CAUTION: These 2 options must be the same for ALL nvim packages!! ###
+      ### CAUTION: These next 2 options must be the same
+      # for ALL nvim packages that you wish to have simultaneously installed.
+
       # use this to pin a specific neovim version.
-      # This one will specify the neovim derivation to use.
+      # This one will specify the base neovim derivation to use.
       neovim-unwrapped = null;
       # This one will just override the src value of the neovim in nixpkgs
       # import it in flake inputs with flake = false,
@@ -467,17 +476,26 @@ It removes the need to stage and rebuild to see your lua changes reflected.
 You will still need to rebuild when making changes to nix regardless of the
 value of wrapRc
 
-However it means that the lua isn't going run if it isn't in the right
+However it also means that the lua isn't going run if it isn't in the right
 folder, i.e. when installed and ran from github with nix run
 
-If the lua is not in `vim.fn.stdpath('config')`, it will not work.
-By default this is ~/.config/nvim on linux systems, although we can
-change nvim to whatever we wish via the configDirName setting.
+If the lua is not in `vim.fn.stdpath('config')`, wrapRc = false will not work.
+By default this is `~/.config/nvim` on linux systems, although we can
+change `nvim` to whatever we wish via the configDirName setting.
 
 The best way to use the wrapRc option is to symlink the correct
 .config directory to wherever your neovim directory in your
-nix config is, and enable it while testing changes,
-then setting it back to true and committing when it works.
+nix config is.
+
+Then, make a second identical packageDefinition, but with wrapRc
+disabled. The nixCats main flake.nix file has an example of this with nixCats
+and regularCats.
+
+Then, when testing lua changes, you run the other package and have a vanilla
+neovim experience, only rebuilding when you install new packages.
+
+When you are satisfied, simply rebuild and go back to using the main package,
+as it was the same except for the single option!
 
 --------------------------------------------------------------------------------------
 Neovim Builder Creation:                        *nixCats.flake.outputs.builder*
