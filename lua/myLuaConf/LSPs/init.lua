@@ -50,7 +50,7 @@ end
 -- servers.gopls = {},
 servers.pyright = {}
 servers.bashls = {}
--- servers.rust_analyzer = {},
+servers.rust_analyzer = {}
 -- servers.tsserver = {},
 -- servers.html = { filetypes = { 'html', 'twig', 'hbs'} },
 

@@ -105,6 +105,7 @@
           fd
           python3.pkgs.black
           pyright
+          rust-analyzer
           nodePackages.bash-language-server
         ];
         neonixdev = {
