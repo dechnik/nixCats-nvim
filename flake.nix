@@ -106,6 +106,7 @@
           python3.pkgs.black
           pyright
           rust-analyzer
+          cargo
           nodePackages.bash-language-server
         ];
         neonixdev = {
